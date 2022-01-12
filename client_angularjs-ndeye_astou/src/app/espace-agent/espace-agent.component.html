@@ -1,0 +1,133 @@
+<mat-toolbar>
+  <button  mat-icon-button *ngIf="sidenav.mode==='side' && vari.isUserLoggedIn()" (click)="sidenav.toggle()">
+      <mat-icon *ngIf="!sidenav.opened">
+          menu
+      </mat-icon>
+      <mat-icon *ngIf="sidenav.opened">
+          close
+      </mat-icon>
+  </button>
+  <span *ngIf="vari.isUserLoggedIn()">Menu</span>
+  <span *ngIf="!vari.isUserLoggedIn()">Bienvenu dans notre site</span>
+  <span class = "filler"></span>
+<div id="div_dec" class="btn btn-outline-danger" style="color: black;">
+  <button  class=""style=" width: 160px;" mat-button class="" *ngIf="vari.isUserLoggedIn()" 
+  mwlConfirmationPopover popoverTitle="Déconnection"
+  popoverMessage="Souhaiter-vous vraiment vous déconnecter ?" placement="auto" container='body' (confirm)="deconnecter()">
+      <span style="color: white;">Se deconnecter   </span> <span style="color: white;" class="glyphicon glyphicon-log-out"></span>
+  </button>
+</div>
+  <a *ngIf="!vari.isUserLoggedIn()" href="/login" style="color: white;" > Se connecter</a>   
+  <a *ngIf="!vari.isUserLoggedIn()" href="/signin" style="color: white; margin-left: 10px;" > S'inscrire</a>   
+</mat-toolbar>
+
+<mat-sidenav-container >
+  <mat-sidenav #sidenav="matSidenav">
+
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl1TWQv6q8vSuGpdge066lIrYuVEaRrcK3C9hOmVwrxNv8NOq3XYaO9WbTEqaa5NVEeSo&usqp=CAU" alt="" class="avatar mat-elevation-z8">
+
+      <h4 class="name" style="margin-bottom: 30px; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{user.prenom}} {{user.nom}}</h4>
+
+      <button mat-button class="menu-button">
+          <mat-icon>home</mat-icon>
+          <span>Accueil</span>
+      </button>
+      <button mat-button class="menu-button">
+          <mat-icon>person</mat-icon>
+          <span>Profil</span>
+      </button>
+      
+      <button mat-button class="menu-button">
+          <mat-icon>info</mat-icon>
+          <span>A propos</span> 
+      </button>
+      <button mat-button class="menu-button">
+          <mat-icon>help</mat-icon>
+          <span>Aide</span>
+      </button>
+      <br/><br/>
+      <a href="/accueil" mat-button class="menu-button">
+        <mat-icon>keyboard_backspace</mat-icon>
+        <span>Retour</span>
+      </a>
+        </mat-sidenav>
+
+  <mat-sidenav-content>
+      <div >
+        <div style="margin-top: 2%;margin-left: 8%;">
+          <div class="row">
+              <div class="col-lg-7" >
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nom bien</th>
+                      <th scope="col">Prix</th>
+                      <th scope="col">Categorie</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let bien of biens; let i=index">
+                      <td>{{bien.idbiens}}</td>
+                      <td>{{bien.nom}}</td>
+                      <td>{{bien.prix}}</td>
+                      <td>{{bien.categorie}}</td>
+                      <td><button (click)='getBienByIdbien(bien.idbiens, addBienForm)'  style="font-size: 4px;" class="btn btn-info btn-sm"><mat-icon style="font-size: 20px;">edit</mat-icon></button></td>
+                      
+                      <td><button  mwlConfirmationPopover popoverTitle="Suppression"
+                        popoverMessage="Souhaiter-vous vraiment vous supprimer ce bien ?" (confirm)="deleteBien(bien.idbiens)" placement="auto" container='body' style="font-size: 4px;" class="btn btn-danger btn-sm"><mat-icon style="font-size: 20px;">delete</mat-icon></button></td>
+                        <td><button  style="font-size: 4px;" class="btn btn-info btn-sm"><mat-icon style="font-size: 20px;">details</mat-icon></button></td>  
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-lg-4">
+                  <form #addBienForm="ngForm" >
+                    <div class="form-group">
+                      <input type="number" ngModel name="idbiens" class="hide" placeholder="Nom du bien">
+                    </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Nom du bien</label>
+                        <input type="text" ngModel name="nom" class="form-control" placeholder="Nom du bien">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Description</label>
+                        <input type="text" ngModel name="description" class="form-control" placeholder="Description">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Prix</label>
+                        <input type="number" ngModel name="prix" class="form-control" placeholder="Prix">
+                      </div>
+                      <div class="form-group">
+                        <input type="datetime-local" ngModel name="date" class="form-control hide"  placeholder="Date et jour">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">NbPiece</label>
+                        <input type="number" ngModel name="nbpiece" class="form-control" placeholder="NbPiece">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Categorie</label>
+                        <input type="text" ngModel name="categorie" class="form-control" placeholder="Categorie">
+                      </div>
+                      
+                      <input type="number" ngModel="{{user.idpers}}" name="idpers" class="hide" aria-describedby="emailHelp" placeholder="Idpers">
+                      
+                      <!--<div class="form-group">
+                          <div class="custom-file">
+                              <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                          </div>                   
+                        </div>-->
+                      <button *ngIf="!editb" (click)="onAddBien(addBienForm)" type="submit" id="submit_btn" ngModel class="btn btn-primary">Enregistrer</button>
+                      <button  *ngIf="editb"  (click)='editbien(addBienForm)' type="submit" ngModel class="btn btn-success">Modifier</button>
+                    </form>
+              </div>
+          </div>
+      </div>
+      </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+

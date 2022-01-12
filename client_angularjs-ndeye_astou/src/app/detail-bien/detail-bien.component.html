@@ -1,0 +1,60 @@
+<mat-toolbar>
+    <button  mat-icon-button *ngIf="sidenav.mode==='side' && vari.isUserLoggedIn()" (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened">
+            menu
+        </mat-icon>
+        <mat-icon *ngIf="sidenav.opened">
+            close
+        </mat-icon>
+    </button>
+    <span *ngIf="vari.isUserLoggedIn()">Menu</span>
+    <span *ngIf="!vari.isUserLoggedIn()">Bienvenu dans notre site</span>
+    <span class = "filler"></span>
+
+    <button style=" width: 160px;" mat-button class="menu-button" *ngIf="vari.isUserLoggedIn()" 
+    mwlConfirmationPopover popoverTitle="Déconnection"
+    popoverMessage="Souhaiter-vous vraiment vous déconnecter ?" placement="auto" container='body' (confirm)="deconnecter()">
+        <span>Se deconnecter</span> 
+    </button>
+
+    <a *ngIf="!vari.isUserLoggedIn()" href="/login" style="color: white;" > Se connecter</a>   
+    <a *ngIf="!vari.isUserLoggedIn()" href="/signin" style="color: white; margin-left: 10px;" > S'inscrire</a>   
+</mat-toolbar>
+
+<mat-sidenav-container >
+    <mat-sidenav #sidenav="matSidenav">
+
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl1TWQv6q8vSuGpdge066lIrYuVEaRrcK3C9hOmVwrxNv8NOq3XYaO9WbTEqaa5NVEeSo&usqp=CAU" alt="" class="avatar mat-elevation-z8">
+
+        <h2 class="name">{{user.prenom}} {{user.nom}}</h2>
+
+        <h3 class="designation">Developpeur web</h3>
+
+        <button mat-button class="menu-button">
+            <mat-icon>home</mat-icon>
+            <span>Accueil</span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>person</mat-icon>
+            <span>Profil</span>
+        </button>
+        
+        <button mat-button class="menu-button">
+            <mat-icon>info</mat-icon>
+            <span>A propos</span> 
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>help</mat-icon>
+            <span>Aide</span>
+        </button>
+        <br/><br/>
+        <a *ngIf="user.type!=1" href="/accueil" id="becomeagent_btn" (click)="becomeAgent()" style="color: white; font-size: 20px;" >Devenir agent</a>
+        <a *ngIf="user.type===1" href="/espaceagent" style="color: white; font-size: 20px;" >Espace agent</a>   
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div >
+            <app-card></app-card>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
